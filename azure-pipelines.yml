@@ -1,5 +1,5 @@
 trigger:
-- your-specific-branch
+- azure-pipelines
 
 resources:
 - repo: self
