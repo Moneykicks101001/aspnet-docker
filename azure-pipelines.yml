@@ -1,0 +1,30 @@
+trigger:
+- azure-pipelines
+
+resources:
+- repo: self
+
+variables:
+  imageRepository: 'moneykicksaspnetdocker'
+  containerRegistry: 'coreregis1010.azurecr.io'
+  dockerfilePath: '$(Build.SourcesDirectory)/Dockerfile'
+  tag: '$(Build.BuildId)'
+
+stages:
+- stage: Build
+  displayName: Build and push stage
+  jobs:
+  - job: Build
+    displayName: Build
+    pool:
+      name: Windows  # Replace with the name of your self-hosted agent pool
+    steps:
+    - task: Docker@2
+      displayName: Build and push an image to container registry
+      inputs:
+        command: buildAndPush
+        repository: $(imageRepository)
+        dockerfile: $(dockerfilePath)
+        containerRegistry: $(containerRegistry)
+        tags: |
+          $(tag)
